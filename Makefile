@@ -1,6 +1,6 @@
 all:
 	echo "Building main"
-	g++ -g main.cpp lexer.h tokens.h -o build/main
+	g++ -g $(shell find . -type f -iregex ".*\.cc") $(shell find . -type f -iregex ".*\.h") -o build/main
 
 clean:
 	rm -r build

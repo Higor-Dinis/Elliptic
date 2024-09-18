@@ -1,14 +1,16 @@
+#pragma once
 #include <string>
 
-namespace Tokens {
+enum class TokenType { EXIT = 0, OPN_PAR, CLS_PAR, DEC_LIT };
 
-enum TokenType {
-  EXIT = 0, OPN_PAR, CLS_PAR, DEC_LIT
-};
-
+/**
+ * The Token struct.
+ *
+ * Properties:
+ *  (TokenType) type: The token type.
+ *  (std::string) value: The token value.
+ */
 struct Token {
-  TokenType type;
-  std::string value;
+  TokenType type; // (TokenType) type: The token type.
+  std::string value; // (std::string) value: The token value.
 };
-
-}  // namespace Tokens

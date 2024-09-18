@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "/home/dragonabysm/Eliptic",
+    "file": "./main.cc",
+    "command": "g++ -g ./main.cc ./lexer.cc ./AST/parser.cc ./scanner.cc ./scanner.h ./Generation/generator.h ./lexer.h ./AST/nodes.h ./AST/parser.h ./tokens.h -o build/main"
+  }
+]

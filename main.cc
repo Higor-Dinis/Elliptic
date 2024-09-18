@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include "lexer.h"
+#include "./AST/parser.h"
 
 int main(int argc, char const *argv[])
 {
@@ -14,6 +15,7 @@ int main(int argc, char const *argv[])
   source_file.open(argv[1]);
   auto lexer = Lexer();
   lexer.feed(&source_file);
-
+  auto parser = Parser(lexer.get_tokens());
+  parser.parse();
   return 0;
 }
