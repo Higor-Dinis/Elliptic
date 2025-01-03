@@ -1,3 +1,27 @@
+// Copyright [2025] <Higor Dinis>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+
+#include <iostream>
+#include <string>
+
 #include "lexer.hpp"
 
 Lexer::Lexer() = default;
@@ -34,9 +58,6 @@ char Lexer::peek(int i) {
 }
 
 char Lexer::peek() {
-  /*
-   * Look ahead a one character
-   * */
   try {
     return source_code.at(character_index + 1);
   } catch (const std::out_of_range) {
@@ -44,69 +65,52 @@ char Lexer::peek() {
   }
 }
 
-// bool Lexer::feed(std::string code_line) { return 0; }
-
 bool Lexer::feed(std::ifstream* source_file) {
-  if (source_file->is_open()) {
-    std::string buffer;
-
-    *source_file >> source_code;
-    std::cout << source_code << std::endl;
-
-    actual_character = next();
-    for (; this->character_index < source_code.length();) {
-      // TODO: Refactore this, to reduce complexity.
-      switch (actual_character) {
-        case '\n':
-          buffer.clear();
-          continue;
-          break;
-        case '(': {
-          Token token_opn_par;
-          token_opn_par.type = TokenType::OPN_PAR;
-          token_opn_par.value = "(";
-          tokens.push_back(token_opn_par);
-          buffer.clear();
-        } break;
-        case ')': {
-          Token token_cls_par;
-          token_cls_par.type = TokenType::CLS_PAR;
-          token_cls_par.value = ")";
-          tokens.push_back(token_cls_par);
-          buffer.clear();
-        } break;
-        default:
-          if (isalnum(actual_character)) {
-            buffer += actual_character;
-          };
-          break;
-      };
-
-      if (isdigit(actual_character)) {
-        while (isdigit(peek())) {
-          buffer += next();
-        }
-
-        Token token_dec_lit;
-        token_dec_lit.type = TokenType::DEC_LIT;
-        token_dec_lit.value = buffer;
-        tokens.push_back(token_dec_lit);
-      }
-
-      if (std::find(keywords.begin(), keywords.end(), buffer) !=
-          keywords.end()) {
-        Token token_keyword;
-        token_keyword.type = TokenType::KEYWORD;
-        token_keyword.value = buffer;
-
-        tokens.push_back(token_keyword);
-        buffer.clear();
-      }
-
-      actual_character = next();
-    }
-  } else {
+  if (!source_file->is_open()) {
     return false;
   }
+
+  *source_file >> source_code;
+  std::cout << source_code << std::endl;
+
+  actual_character = next();
+  std::string buffer;
+
+  while (character_index < source_code.length()) {
+    switch (actual_character) {
+      case '\n':
+        buffer.clear();
+        break;
+      case '(': {
+        tokens.push_back({TokenType::OPN_PAR, "("});
+        buffer.clear();
+      } break;
+      case ')': {
+        tokens.push_back({TokenType::CLS_PAR, ")"});
+        buffer.clear();
+      } break;
+      default:
+        if (isalnum(actual_character)) {
+          buffer += actual_character;
+        }
+        break;
+    }
+
+    if (isdigit(actual_character)) {
+      while (isdigit(peek())) {
+        buffer += next();
+      }
+      tokens.push_back({TokenType::DEC_LIT, buffer});
+      buffer.clear();
+    }
+
+    if (std::find(keywords.begin(), keywords.end(), buffer) != keywords.end()) {
+      tokens.push_back({TokenType::KEYWORD, buffer});
+      buffer.clear();
+    }
+
+    actual_character = next();
+  }
+
   return true;
 }
