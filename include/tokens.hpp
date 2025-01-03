@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-enum class TokenType { EXIT = 0, OPN_PAR, CLS_PAR, DEC_LIT };
+enum class TokenType { IDENTIFIER, KEYWORD, OPN_PAR, CLS_PAR, DEC_LIT };
 
 /**
  * The Token struct.

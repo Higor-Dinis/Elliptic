@@ -1,4 +1,4 @@
-#include "scanner.h"
+#include "scanner.hpp"
 
 Scanner::Scanner(std::ifstream file) {
   if (file.is_open()) {

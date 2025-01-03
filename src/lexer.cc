@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "lexer.hpp"
 
 Lexer::Lexer() = default;
 
@@ -16,10 +16,32 @@ char Lexer::next() {
   try {
     actual_character = source_code.at(character_index);
   } catch (const std::out_of_range) {
-    return;
+    return '\0';
   }
 
   return actual_character;
+}
+
+char Lexer::peek(int i) {
+  /*
+   * Look ahead a given number of characters
+   * */
+  try {
+    return source_code.at(character_index + i);
+  } catch (const std::out_of_range) {
+    return '\0';
+  }
+}
+
+char Lexer::peek() {
+  /*
+   * Look ahead a one character
+   * */
+  try {
+    return source_code.at(character_index + 1);
+  } catch (const std::out_of_range) {
+    return '\0';
+  }
 }
 
 // bool Lexer::feed(std::string code_line) { return 0; }
@@ -61,23 +83,24 @@ bool Lexer::feed(std::ifstream* source_file) {
       };
 
       if (isdigit(actual_character)) {
-        while (isdigit(next())) {
-          buffer += actual_character;
+        while (isdigit(peek())) {
+          buffer += next();
         }
 
         Token token_dec_lit;
         token_dec_lit.type = TokenType::DEC_LIT;
         token_dec_lit.value = buffer;
         tokens.push_back(token_dec_lit);
-        character_index -= 1;
       }
 
-      if (buffer == "exit") {
+      if (std::find(keywords.begin(), keywords.end(), buffer) !=
+          keywords.end()) {
+        Token token_keyword;
+        token_keyword.type = TokenType::KEYWORD;
+        token_keyword.value = buffer;
+
+        tokens.push_back(token_keyword);
         buffer.clear();
-        Token token_exit;
-        token_exit.type = TokenType::EXIT;
-        token_exit.value = "exit";
-        tokens.push_back(token_exit);
       }
 
       actual_character = next();

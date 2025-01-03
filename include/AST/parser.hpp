@@ -2,8 +2,8 @@
 #include <optional>
 #include <vector>
 
-#include "../tokens.h"
-#include "nodes.h"
+#include "../tokens.hpp"
+#include "nodes.hpp"
 
 class Parser {
  private:
@@ -22,7 +22,7 @@ class Parser {
   Parser(std::vector<Token> tokens);
   ~Parser();
 
-  std::optional<NodeExit> parse();
+  std::vector<Node> parse();
 
   NodeExpr parse_expr();
 };

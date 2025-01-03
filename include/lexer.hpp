@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "tokens.h"
+#include "tokens.hpp"
 
 class Lexer {
  private:
@@ -13,8 +13,18 @@ class Lexer {
   char actual_character;
   std::string source_code;
   std::vector<Token> tokens;
+  std::vector<std::string> keywords = {"exit"};
 
   char next();
+
+  char peek(int i);
+
+  char peek();
+
+  // void handleCharacter(std::string& buffer);
+  // void handleNewline(std::string& buffer);
+  // void handleCloseParenthesis(std::string& buffer);
+  // void handleDefault(std::string& buffer);
 
  public:
   Lexer();
