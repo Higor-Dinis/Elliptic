@@ -53,6 +53,7 @@
 #include <iostream>
 #include <variant>
 #include <vector>
+#include <optional>
 
 #include "../tokens.hpp"
 
@@ -69,7 +70,11 @@
  * @var NodeType::EXPR
  * Represents an expression node in the AST.
  */
-enum class NodeType { EXIT, EXPR };
+enum class NodeType { EXIT, EXPR, VAR_ASSGN, VAR_DECL };
+
+struct Node {
+  NodeType type;
+};
 
 /**
  * @struct NodeExpr
@@ -82,11 +87,31 @@ enum class NodeType { EXIT, EXPR };
  * @var NodeExpr::dec_lit
  * Token representing a decimal literal.
  */
-struct NodeExpr {
+struct NodeExpr : public Node {
+  NodeType type = NodeType::EXPR;
+
   Token dec_lit;
 };
 
-struct NodeVarDeclaration {
+/**
+ * @brief 
+ * 
+ */
+struct NodeVarDeclaration : public Node {
+  NodeType type = NodeType::VAR_DECL;
+
+  Token identifier;
+  Token type_id;
+  std::optional<NodeExpr> expr;
+};
+
+/**
+ * @brief 
+ * 
+ */
+struct NodeVarAssignment : public Node {
+  NodeType type = NodeType::VAR_ASSGN;
+
   Token identifier;
   Token type_id;
   NodeExpr expr;
@@ -102,25 +127,8 @@ struct NodeVarDeclaration {
  * @var NodeExit::expr
  * The expression node associated with the exit statement.
  */
-struct NodeExit {
-  NodeExpr expr;
-};
+struct NodeExit : public Node {
+  NodeType type = NodeType::EXIT;
 
-/**
- * @struct Node
- * @brief Represents a node in the AST (Abstract Syntax Tree).
- *
- * The Node struct is used to encapsulate different types of nodes
- * that can appear in the AST. Each node has a type and a value.
- *
- * @var Node::type
- * The type of the node, represented by the NodeType enum.
- *
- * @var Node::value
- * The value of the node, which can be either a NodeExpr or a NodeExit,
- * encapsulated in a std::variant.
- */
-struct Node {
-  NodeType type;
-  std::variant<NodeExpr, NodeExit> value;
+  NodeExpr expr;
 };

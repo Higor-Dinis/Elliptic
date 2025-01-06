@@ -33,7 +33,7 @@ void AssemblyGenerator::generate(std::vector<Node> nodes) {
   for (auto& node : nodes) {
     switch (node.type) {
       case NodeType::EXIT: {
-        const NodeExit& nodeExit = std::get<NodeExit>(node.value);
+        const NodeExit& nodeExit = static_cast<const NodeExit&>(node);
         std::cout << "  mov rax, 60" << std::endl;
         std::cout << "  mov rdi, " << nodeExit.expr.dec_lit.value << std::endl;
         std::cout << "  syscall" << std::endl;
@@ -41,7 +41,7 @@ void AssemblyGenerator::generate(std::vector<Node> nodes) {
         break;
       }
       case NodeType::EXPR: {
-        const NodeExpr& nodeExpr = std::get<NodeExpr>(node.value);
+        const NodeExpr& nodeExpr = static_cast<const NodeExpr&>(node);
         std::cout << "  mov eax, " << nodeExpr.dec_lit.value << std::endl;
         break;
       }

@@ -55,25 +55,32 @@ Token Parser::consume() {
 std::vector<Node> Parser::parse() {
   std::vector<Node> nodes;
 
-  while (peek(2).has_value()) {
+  while (actual_token.type != TokenType::EOF_TOKEN) {
     switch (actual_token.type) {
       case TokenType::KEYWORD: {
         if (actual_token.value == "exit") {
           NodeExit node_exit;
           node_exit.expr = parse_expr();
 
-          Node node;
-          node.type = NodeType::EXIT;
-          node.value = node_exit;
-
-          nodes.push_back(node);
+          nodes.push_back(node_exit);
 
           return nodes;
         }
-      };
-        consume();
+      } break;
+      case TokenType::EQ: {
+        if (peek(-1).has_value() && peek(-1).value().type == TokenType::IDENTIFIER && peek(-2).has_value() && peek(-2).value().type == TokenType::IDENTIFIER) {
+          NodeVarDeclaration node_var_decl;
+          node_var_decl.identifier = peek(-1).value();
+          node_var_decl.type_id = peek(-2).value();
+
+          if (peek().has_value() && peek().value().type == TokenType::DEC_LIT) {
+            node_var_decl.expr = parse_expr();
+          }
+        }
+      } break;
     }
-    return {};
+
+    consume();
   }
 
   return {};

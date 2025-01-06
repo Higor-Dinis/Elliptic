@@ -65,13 +65,13 @@ char Lexer::peek() {
 }
 
 void Lexer::handleWhitespace() {
-  while (isspace(actual_character)) {
+  while (isspace(peek()) && peek() != '\0') {
     actual_character = next();
   }
 }
 
 void Lexer::handleNewLine() {
-  while (actual_character == '\n') {
+  while (peek() == '\n') {
     actual_character = next();
   }
 }
@@ -79,9 +79,10 @@ void Lexer::handleNewLine() {
 void Lexer::handleDecLiteral() {
   buffer += actual_character;
 
-  while (isdigit(actual_character)) {
+  while (isdigit(peek()) && peek() != '\0') {
     buffer += next();
   }
+  next();
 
   tokens.push_back({TokenType::DEC_LIT, buffer});
   buffer.clear();
