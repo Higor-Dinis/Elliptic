@@ -155,7 +155,7 @@ bool Lexer::feed(std::ifstream* source_file) {
     }
 
     if (isalnum(actual_character) || actual_character == '_') {
-          handleIdentifier();
+      handleIdentifier();
     }
 
     next();
