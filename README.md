@@ -40,6 +40,12 @@ Building:
 $ ninja .
 ```
 
+To build documentations run:
+```bash
+$ mkdir docs
+$ doxygen
+```
+
 ## How to contribute
 
 We welcome contributions from the community! Here are some ways you can get involved:

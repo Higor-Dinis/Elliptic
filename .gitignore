@@ -1,3 +1,5 @@
 .vscode/
-main.e
 build/
+docs/
+
+main.e
