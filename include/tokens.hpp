@@ -22,7 +22,7 @@
 #pragma once
 #include <string>
 
-enum class TokenType { IDENTIFIER, KEYWORD, OPN_PAR, CLS_PAR, DEC_LIT };
+enum class TokenType { IDENTIFIER, KEYWORD, OPN_PAR, CLS_PAR, DEC_LIT, EQ, PLUS, MINUS, MULT, DIV, SEMICOLON, COMMA, EOF_TOKEN };
 
 /**
  * @struct Token

@@ -44,6 +44,7 @@ class Lexer {
   char actual_character;
   std::string source_code;
   std::vector<Token> tokens;
+  std::string buffer;
   std::vector<std::string> keywords = {"exit"};
 
   char next();
@@ -51,6 +52,14 @@ class Lexer {
   char peek(int i);
 
   char peek();
+
+  void handleWhitespace();
+  void handleNewLine();
+  void handleIdentifier();
+  void handleDecLiteral();
+
+  bool isKeyword(const std::string word);
+
 
  public:
   Lexer();

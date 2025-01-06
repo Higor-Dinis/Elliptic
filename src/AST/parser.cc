@@ -76,6 +76,8 @@ std::vector<Node> Parser::parse() {
     }
     return {};
   }
+
+  return {};
 }
 
 NodeExpr Parser::parse_expr() {

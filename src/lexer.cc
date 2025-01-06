@@ -7,8 +7,8 @@
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -18,11 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "lexer.hpp"
 
 #include <iostream>
 #include <string>
-
-#include "lexer.hpp"
 
 Lexer::Lexer() = default;
 
@@ -65,52 +64,104 @@ char Lexer::peek() {
   }
 }
 
+void Lexer::handleWhitespace() {
+  while (isspace(actual_character)) {
+    actual_character = next();
+  }
+}
+
+void Lexer::handleNewLine() {
+  while (actual_character == '\n') {
+    actual_character = next();
+  }
+}
+
+void Lexer::handleDecLiteral() {
+  buffer += actual_character;
+
+  while (isdigit(actual_character)) {
+    buffer += next();
+  }
+
+  tokens.push_back({TokenType::DEC_LIT, buffer});
+  buffer.clear();
+}
+
+bool Lexer::isKeyword(const std::string word) {
+  return std::find(keywords.begin(), keywords.end(), word) != keywords.end();
+}
+
+void Lexer::handleIdentifier() {
+  buffer += actual_character;
+
+  while (isalnum(peek())) {
+    buffer += next();
+  }
+
+  if (isKeyword(buffer)) {
+    tokens.push_back({TokenType::KEYWORD, buffer});
+  } else {
+    tokens.push_back({TokenType::IDENTIFIER, buffer});
+  }
+
+  buffer.clear();
+}
+
 bool Lexer::feed(std::ifstream* source_file) {
   if (!source_file->is_open()) {
     return false;
   }
 
-  *source_file >> source_code;
+  source_code.assign((std::istreambuf_iterator<char>(*source_file)),
+                     std::istreambuf_iterator<char>());
   std::cout << source_code << std::endl;
 
-  actual_character = next();
-  std::string buffer;
+  next();
 
   while (character_index < source_code.length()) {
     switch (actual_character) {
       case '\n':
-        buffer.clear();
+        handleNewLine();
         break;
       case '(': {
         tokens.push_back({TokenType::OPN_PAR, "("});
         buffer.clear();
       } break;
       case ')': {
+        if (!buffer.empty()) {
+          tokens.push_back({TokenType::IDENTIFIER, buffer});
+        }
         tokens.push_back({TokenType::CLS_PAR, ")"});
         buffer.clear();
       } break;
+      case '=': {
+        tokens.push_back({TokenType::EQ, "="});
+        buffer.clear();
+      } break;
+      case '+': {
+        tokens.push_back({TokenType::PLUS, "+"});
+        buffer.clear();
+      } break;
+      case ' ': {
+        handleWhitespace();
+      } break;
       default:
-        if (isalnum(actual_character)) {
-          buffer += actual_character;
-        }
         break;
     }
 
     if (isdigit(actual_character)) {
-      while (isdigit(peek())) {
-        buffer += next();
-      }
-      tokens.push_back({TokenType::DEC_LIT, buffer});
-      buffer.clear();
+      handleDecLiteral();
+      continue;
     }
 
-    if (std::find(keywords.begin(), keywords.end(), buffer) != keywords.end()) {
-      tokens.push_back({TokenType::KEYWORD, buffer});
-      buffer.clear();
+    if (isalnum(actual_character) || actual_character == '_') {
+          handleIdentifier();
     }
 
-    actual_character = next();
+    next();
   }
+
+  tokens.push_back({TokenType::EOF_TOKEN, "EOF"});
 
   return true;
 }
