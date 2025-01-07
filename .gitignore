@@ -1,5 +1,11 @@
 .vscode/
 build/
-docs/
+doxygen_docs/
 
 main.e
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz

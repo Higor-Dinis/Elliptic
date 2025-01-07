@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\begin{document}
+
+\title{Eliptic}
+\author{Higor Dinis}
+\date{\today}
+\maketitle
+
+\section{Formal Grammar}
+
+\begin{description}
+  \item[\textbf{Program}] ::= \texttt{<Statement>}*
+  \item[\textbf{Statement}] ::= \texttt{<FunctionCall>} $|$ \texttt{<VarDecl>}
+  \item[\textbf{VarDecl}] ::= \texttt{<Type>} \texttt{<Identifier>} = [\texttt{<Expr>}]?;
+  \item[\textbf{VarAssgn}] ::= \texttt{<Type>} \texttt{<Identifier>} = \texttt{<Expr>};
+  \item[\textbf{Identifier}] ::= \texttt{[a-zA-Z\_][a-zA-Z0-9\_]*}
+  \item[\textbf{FunctionCall}] ::= \texttt{<Identifier>}(\texttt{<Argument>}*);
+  \item[\textbf{BinaryExpr}] ::= \texttt{<Expr>} \texttt{<Operator>} \texttt{<Expr>}
+  \item[\textbf{IntLiteral}] ::= \texttt{[0-9]*}
+  \item[\textbf{Type}] ::= \texttt{<Identifier>}
+  \item[\textbf{Expr}] ::= \texttt{<BinaryExpr>} $|$ \texttt{<FunctionCall>}
+  \item[\textbf{Argument}] ::= \texttt{<Identifier>} $|$ \texttt{<Expr>}
+\end{description}
+
+\end{document}
