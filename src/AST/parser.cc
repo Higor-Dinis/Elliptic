@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+
+//TODO: Refactor the parser logic
 #include "AST/parser.hpp"
 
 #include <iostream>
@@ -68,12 +70,15 @@ std::vector<Node> Parser::parse() {
         }
       } break;
       case TokenType::EQ: {
-        if (peek(-1).has_value() && peek(-1).value().type == TokenType::IDENTIFIER && peek(-2).has_value() && peek(-2).value().type == TokenType::IDENTIFIER) {
+        if (peek(-1).has_value() &&
+            peek(-1).value().type == TokenType::IDENTIFIER &&
+            peek(-2).has_value() &&
+            peek(-2).value().type == TokenType::IDENTIFIER) {
           NodeVarDeclaration node_var_decl;
           node_var_decl.identifier = peek(-1).value();
           node_var_decl.type_id = peek(-2).value();
 
-          if (peek().has_value() && peek().value().type == TokenType::DEC_LIT) {
+          if (peek().has_value() && peek().value().type == TokenType::NUM) {
             node_var_decl.expr = parse_expr();
           }
         }
@@ -101,7 +106,7 @@ NodeExpr Parser::parse_expr() {
     return expr;
   }
 
-  if (peek().has_value() && peek().value().type == TokenType::DEC_LIT) {
+  if (peek().has_value() && peek().value().type == TokenType::NUM) {
     expr.dec_lit = consume();
     return expr;
   }

@@ -51,9 +51,9 @@
 #pragma once
 
 #include <iostream>
+#include <optional>
 #include <variant>
 #include <vector>
-#include <optional>
 
 #include "../tokens.hpp"
 
@@ -94,8 +94,8 @@ struct NodeExpr : public Node {
 };
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 struct NodeVarDeclaration : public Node {
   NodeType type = NodeType::VAR_DECL;
@@ -106,8 +106,8 @@ struct NodeVarDeclaration : public Node {
 };
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 struct NodeVarAssignment : public Node {
   NodeType type = NodeType::VAR_ASSGN;

@@ -21,8 +21,11 @@
 
 #pragma once
 #include <string>
+#include <array>
 
-enum class TokenType { IDENTIFIER, KEYWORD, OPN_PAR, CLS_PAR, DEC_LIT, EQ, PLUS, MINUS, MULT, DIV, SEMICOLON, COMMA, EOF_TOKEN };
+const std::array<std::string, 8> keywords = { "exit", "if", "while", "match", "case", "else", "set", "const" };
+
+enum class TokenType { IDENTIFIER, KEYWORD, OPN_PAR, CLS_PAR, OPN_BRACKET, CLS_BRACKET, NUM, EQ, PLUS, MINUS, STAR, R_BAR, L_BAR, SEMICOLON, PIPE, COMMA, AND, PERCENT, EXCLAMATION, AT, EOF_TOKEN, UNKNOWN };
 
 /**
  * @struct Token
