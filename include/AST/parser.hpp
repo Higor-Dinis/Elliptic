@@ -24,26 +24,29 @@
 #include <vector>
 
 #include "AST/nodes.hpp"
+#include "lexer.hpp"
 #include "tokens.hpp"
 
 class Parser {
- private:
-  int token_index = -1;
-  Token actual_token;
-
-  std::vector<Token> tokens;
-
-  std::optional<Token> peek();
-
-  std::optional<Token> peek(int i);
-
-  Token consume();
-
  public:
-  explicit Parser(std::vector<Token> tokens);
-  ~Parser();
+  Parser();
 
-  std::vector<Node> parse();
+  Node consume_node();
+
+  std::vector<Node> get_nodes();
+
+ private:
+  Lexer *lexer;
+
+  Token current_token;
+
+  Node process_node();
 
   NodeExpr parse_expr();
+  NodeExit parse_exit();
+  NodeVarDeclaration parse_var_decl();
+  NodeVarAssignment parse_var_assgn();
+
+  std::vector<Node> get_tokens_in_par();
+  std::vector<Node> get_tokens_in_bracket();
 };

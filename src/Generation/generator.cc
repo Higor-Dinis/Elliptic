@@ -48,3 +48,4 @@ void AssemblyGenerator::generate(std::vector<Node> nodes) {
     }
   }
 }
+

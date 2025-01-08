@@ -18,98 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-//TODO: Refactor the parser logic
-#include "AST/parser.hpp"
-
-#include <iostream>
+#include <optional>
 #include <vector>
 
-Parser::Parser(std::vector<Token> tokens) {
-  this->tokens = tokens;
-  actual_token = consume();
+#include "AST/nodes.hpp"
+#include "tokens.hpp"
+
+#include "AST/parser.hpp"
+
+Parser::Parser() : lexer(lexer) {};
+
+Node Parser::consume_node() {
+
 }
 
-Parser::~Parser() { tokens.clear(); }
+Node Parser::process_node() {
+  while (lexer->peek_token().type != TokenType::EOF_TOKEN)
+  {
+    auto token = lexer->consume_token();
 
-std::optional<Token> Parser::peek() {
-  if ((token_index + 1) < tokens.size()) {
-    return tokens.at(token_index + 1);
+    
   }
-  return {};
-}
-
-std::optional<Token> Parser::peek(int i) {
-  if ((token_index + i) < tokens.size()) {
-    return tokens.at(token_index + i);
-  }
-  return {};
-}
-
-Token Parser::consume() {
-  if (token_index + 1 < tokens.size()) {
-    actual_token = tokens.at(++token_index);
-    return actual_token;
-  }
-  return {};
-}
-
-std::vector<Node> Parser::parse() {
-  std::vector<Node> nodes;
-
-  while (actual_token.type != TokenType::EOF_TOKEN) {
-    switch (actual_token.type) {
-      case TokenType::KEYWORD: {
-        if (actual_token.value == "exit") {
-          NodeExit node_exit;
-          node_exit.expr = parse_expr();
-
-          nodes.push_back(node_exit);
-
-          return nodes;
-        }
-      } break;
-      case TokenType::EQ: {
-        if (peek(-1).has_value() &&
-            peek(-1).value().type == TokenType::IDENTIFIER &&
-            peek(-2).has_value() &&
-            peek(-2).value().type == TokenType::IDENTIFIER) {
-          NodeVarDeclaration node_var_decl;
-          node_var_decl.identifier = peek(-1).value();
-          node_var_decl.type_id = peek(-2).value();
-
-          if (peek().has_value() && peek().value().type == TokenType::NUM) {
-            node_var_decl.expr = parse_expr();
-          }
-        }
-      } break;
-    }
-
-    consume();
-  }
-
-  return {};
-}
-
-NodeExpr Parser::parse_expr() {
-  NodeExpr expr;
-
-  if (peek().has_value() && peek().value().type == TokenType::OPN_PAR) {
-    consume();
-    expr = parse_expr();
-
-    if (peek().has_value() && peek().value().type == TokenType::CLS_PAR) {
-      consume();
-    } else {
-      std::cerr << "Syntax error: expected ')'" << std::endl;
-    }
-    return expr;
-  }
-
-  if (peek().has_value() && peek().value().type == TokenType::NUM) {
-    expr.dec_lit = consume();
-    return expr;
-  }
-
-  return {};
+  
 }

@@ -1,4 +1,4 @@
-# Contributing to Eliptic
+# Contributing to Elliptic
 
 First off, thanks for taking the time to contribute!
 
@@ -37,4 +37,4 @@ If you have a feature request, please create an issue with:
 - Include tests for new features or bug fixes.
 - Ensure all tests pass before submitting the pull request.
 
-We appreciate your contributions and thank you for improving Eliptic!
+We appreciate your contributions and thank you for improving Elliptic!

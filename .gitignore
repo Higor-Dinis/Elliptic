@@ -3,6 +3,7 @@ build/
 doxygen_docs/
 
 main.e
+main.asm
 
 *.aux
 *.fdb_latexmk

@@ -1,4 +1,4 @@
-# Eliptic Language Concepts
+# Elliptic Language Concepts
 
 *Higor Dinis, 01/07/2025*
 
@@ -10,7 +10,7 @@
 
 ### No Special Types
 
-In the Eliptic language, there are no exceptions, optional types, or variant types. If a piece of code needs to exchange data with another, it has to be using a normal type.
+In the Elliptic language, there are no exceptions, optional types, or variant types. If a piece of code needs to exchange data with another, it has to be using a normal type.
 
 See this C++ code:
 
@@ -32,7 +32,7 @@ int main() {
 
 In this case, an exception is being thrown to indicate an error. This is a common pattern in many programming languages, but it introduces complexity and makes code harder to follow and debug.
 
-Instead, Eliptic encourages a simpler approach, where errors are returned as values:
+Instead, Elliptic encourages a simpler approach, where errors are returned as values:
 
 ```Cpp
 int error_function() {
@@ -52,7 +52,7 @@ This approach allows errors to be dealt with as soon as they occur, rather than 
 
 *Warning: Any assembly code added in the program will not be tested or verified by the compiler.*
 
-In Eliptic, we have a keyword-function for running assembly code directly within the program. The assembly code is architecture-specific, meaning it will be tailored to the target machine.
+In Elliptic, we have a keyword-function for running assembly code directly within the program. The assembly code is architecture-specific, meaning it will be tailored to the target machine.
 
 The `asm` keyword will work as in this example:
 
@@ -88,7 +88,7 @@ int a = 5;
 float b = a; // Implicit casting
 ```
 
-In Eliptic, this will result in a compile-time error unless you explicitly convert the integer to a float:
+In Elliptic, this will result in a compile-time error unless you explicitly convert the integer to a float:
 
 ```Cpp
 int a = 5;

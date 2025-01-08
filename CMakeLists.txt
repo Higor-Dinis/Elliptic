@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.0)
-project(eliptic VERSION 0.1.0 LANGUAGES C CXX)
+project(Elliptic VERSION 0.1.0 LANGUAGES C CXX)
 
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -16,19 +16,19 @@ file(GLOB_RECURSE SOURCES "src/*.cc")
 file(GLOB_RECURSE INCLUDES "include/*.hpp")
 
 # Create a static library instead of an executable for shared code
-add_library(eliptic-lib STATIC ${SOURCES})
+add_library(Elliptic-lib STATIC ${SOURCES})
 
 # Include directories
-target_include_directories(eliptic-lib PUBLIC include)
+target_include_directories(Elliptic-lib PUBLIC include)
 
 # Ensure C++17 features are available
-target_compile_features(eliptic-lib PRIVATE cxx_std_17)
+target_compile_features(Elliptic-lib PRIVATE cxx_std_17)
 
 # Create the executable for the project (if you still want it)
-add_executable(eliptic src/main.cc)  
+add_executable(Elliptic src/main.cc)  
 
 # Link the static library to your executable
-target_link_libraries(eliptic PRIVATE eliptic-lib)
+target_link_libraries(Elliptic PRIVATE Elliptic-lib)
 
 # Testing configuration
 enable_testing()
@@ -40,7 +40,7 @@ file(GLOB TEST_SOURCES "tests/*.cc")
 add_executable(unit-test ${TEST_SOURCES})
 
 # Link GoogleTest libraries and the static library
-target_link_libraries(unit-test PRIVATE gtest gtest_main eliptic-lib)
+target_link_libraries(unit-test PRIVATE gtest gtest_main Elliptic-lib)
 
 # Include directories for tests
 target_include_directories(unit-test PRIVATE include)
@@ -49,7 +49,7 @@ target_include_directories(unit-test PRIVATE include)
 add_test(NAME UnitTests COMMAND unit-test)
 
 # Installation rules
-install(TARGETS eliptic DESTINATION bin)
+install(TARGETS Elliptic DESTINATION bin)
 install(DIRECTORY include/ DESTINATION include)
 
 # Set default build type to Release if not specified
