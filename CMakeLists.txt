@@ -15,33 +15,38 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 file(GLOB_RECURSE SOURCES "src/*.cc")
 file(GLOB_RECURSE INCLUDES "include/*.hpp")
 
-# Create the executable
-add_executable(eliptic ${SOURCES})
+# Create a static library instead of an executable for shared code
+add_library(eliptic-lib STATIC ${SOURCES})
 
 # Include directories
-target_include_directories(eliptic PRIVATE include)
+target_include_directories(eliptic-lib PUBLIC include)
 
-# Ensure C++11 features are available
-target_compile_features(eliptic PRIVATE cxx_std_11)
+# Ensure C++17 features are available
+target_compile_features(eliptic-lib PRIVATE cxx_std_17)
 
-# Enable testing
-include(CTest)
+# Create the executable for the project (if you still want it)
+add_executable(eliptic src/main.cc)  
+
+# Link the static library to your executable
+target_link_libraries(eliptic PRIVATE eliptic-lib)
+
+# Testing configuration
 enable_testing()
 
-# Fetch and include GoogleTest
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        v1.15.2
-)
-FetchContent_MakeAvailable(googletest)
+# Add test sources
+file(GLOB TEST_SOURCES "tests/*.cc")
 
-# Link GoogleTest libraries
-target_link_libraries(eliptic gtest gtest_main)
+# Create a test executable
+add_executable(unit-test ${TEST_SOURCES})
 
-# Add a test
-add_test(NAME UnityTests COMMAND unity-test)
+# Link GoogleTest libraries and the static library
+target_link_libraries(unit-test PRIVATE gtest gtest_main eliptic-lib)
+
+# Include directories for tests
+target_include_directories(unit-test PRIVATE include)
+
+# Add tests
+add_test(NAME UnitTests COMMAND unit-test)
 
 # Installation rules
 install(TARGETS eliptic DESTINATION bin)

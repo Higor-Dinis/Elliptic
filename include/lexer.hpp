@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#pragma once
 
 #include <vector>
 #include <optional>
@@ -35,17 +36,11 @@ class Lexer {
 
     std::vector<Token> get_tokens();
 
-    bool is_token(TokenType type);
-    bool is_token(TokenType type, std::string value);
   private:
     Scanner* scanner;
 
     std::string buffer;
     int token_index;
-    
-    bool lexing_identifier;
-    bool lexing_num_lit;
-    bool lexing_str_lit;
 
     Token process_token();
 

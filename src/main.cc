@@ -40,5 +40,7 @@ int main(int argc, char const *argv[]) {
   auto lexer = Lexer(&scanner);
   auto tokens = lexer.get_tokens();
 
+  auto parser = Parser();
+
   return 0;
 }

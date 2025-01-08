@@ -7,8 +7,8 @@
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -17,7 +17,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
 
 #include "scanner.hpp"
 
@@ -35,7 +34,18 @@ char Scanner::get_current_char() { return current_character; }
 
 char Scanner::consume_char() {
   character_index += 1;
-  int character = source_file->get();
+  int character;
+
+  if (!source_code.empty()) {
+    try {
+      character = source_code.at(character_index);
+    } catch (std::exception &e) {
+      current_character = '\0';
+      return '\0';
+    }
+  } else {
+    character = source_file->get();
+  }
 
   if (character == EOF) {
     current_character = '\0';
@@ -47,15 +57,19 @@ char Scanner::consume_char() {
 }
 
 char Scanner::peek_char() {
+
+  if (!source_code.empty()) {
+    char character = source_code[character_index + 1];
+    return character;
+  }
+
   int current_index = source_file->tellg();
   char current_char = current_character;
   int current_index_backup = character_index;
 
   char character = consume_char();
 
-  source_file->seekg(current_index);
-  character_index = current_index_backup;
-  current_character = current_char;
+  go_to(current_index);
 
   return character;
 }
@@ -84,6 +98,12 @@ std::string Scanner::peek_word() {
 int Scanner::get_index() { return character_index; }
 
 bool Scanner::go_to(int i) {
+  if (!source_code.empty()) {
+    character_index = --i;
+    consume_char();
+    return true;
+  }
+
   source_file->seekg(i);
 
   if (source_file->fail()) {
