@@ -27,18 +27,26 @@
 #include "lexer.hpp"
 #include "tokens.hpp"
 
+enum class Types {
+  INT, FLOAT, STR
+};
+
 class Parser {
  public:
-  Parser();
+  Parser(std::vector<Token> tokens);
 
   Node consume_node();
 
   std::vector<Node> get_nodes();
 
  private:
-  Lexer *lexer;
+  std::vector<Token> tokens;
 
+  int token_index;
   Token current_token;
+
+  Token peek_token();
+  Token consume_token();
 
   Node process_node();
 
