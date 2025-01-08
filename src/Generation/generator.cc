@@ -7,8 +7,8 @@
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -18,11 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Generation/generator.hpp"
 
 #include <iostream>
 #include <vector>
 
-#include "Generation/generator.hpp"
 #include "AST/nodes.hpp"
 
 void AssemblyGenerator::generate(std::vector<Node> nodes) {
@@ -33,7 +33,7 @@ void AssemblyGenerator::generate(std::vector<Node> nodes) {
   for (auto& node : nodes) {
     switch (node.type) {
       case NodeType::EXIT: {
-        const NodeExit& nodeExit = std::get<NodeExit>(node.value);
+        const NodeExit& nodeExit = static_cast<const NodeExit&>(node);
         std::cout << "  mov rax, 60" << std::endl;
         std::cout << "  mov rdi, " << nodeExit.expr.dec_lit.value << std::endl;
         std::cout << "  syscall" << std::endl;
@@ -41,10 +41,11 @@ void AssemblyGenerator::generate(std::vector<Node> nodes) {
         break;
       }
       case NodeType::EXPR: {
-        const NodeExpr& nodeExpr = std::get<NodeExpr>(node.value);
+        const NodeExpr& nodeExpr = static_cast<const NodeExpr&>(node);
         std::cout << "  mov eax, " << nodeExpr.dec_lit.value << std::endl;
         break;
       }
     }
   }
 }
+

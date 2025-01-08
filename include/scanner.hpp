@@ -7,8 +7,8 @@
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -18,35 +18,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+
 #pragma once
+#include <fstream>
 
-#include <optional>
-#include <vector>
 
-#include "AST/nodes.hpp"
-#include "lexer.hpp"
-#include "tokens.hpp"
+class Scanner {
+  public:
+    Scanner(std::ifstream* source_file);
+    Scanner(std::string source_code);
 
-class Parser {
- public:
-  Parser();
+    char consume_char();
+    char peek_char();
 
-  Node consume_node();
+    char get_current_char();
+    char peek_char(int i);
 
-  std::vector<Node> get_nodes();
+    std::string consume_word();
+    std::string peek_word();
+    std::string peek_word(int i);
 
- private:
-  Lexer *lexer;
+    int get_index();
+    bool go_to(int i);
 
-  Token current_token;
+  private:
+    std::ifstream* source_file;
+    std::string source_code;
 
-  Node process_node();
-
-  NodeExpr parse_expr();
-  NodeExit parse_exit();
-  NodeVarDeclaration parse_var_decl();
-  NodeVarAssignment parse_var_assgn();
-
-  std::vector<Node> get_tokens_in_par();
-  std::vector<Node> get_tokens_in_bracket();
+    char current_character;
+    int character_index;
 };

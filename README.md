@@ -1,7 +1,7 @@
-# Eliptic
+# Elliptic
 
 ## The project
-Eliptic is a open-source, MIT licensed, compiled programming language. The basic premisse is be a easy, programmer-friendly language.
+Elliptic is a open-source, MIT licensed, compiled programming language. The basic premisse is be a easy, programmer-friendly language.
 
 ## How to build
 
@@ -25,13 +25,13 @@ $ brew install cmake gcc ninja-build
 ### Building
 Clone the repository:
 ```bash
-$ git clone https://github.com/Higor-Dinis/Eliptic
+$ git clone https://github.com/Higor-Dinis/Elliptic
 ```
 
 Create build files:
 ```bash
-$ mkdir Eliptic/build 
-$ cd Eliptic/build 
+$ mkdir Elliptic/build 
+$ cd Elliptic/build 
 $ cmake -G Ninja ..
 ```
 
@@ -40,11 +40,17 @@ Building:
 $ ninja .
 ```
 
+To build documentations run:
+```bash
+$ mkdir docs
+$ doxygen
+```
+
 ## How to contribute
 
 We welcome contributions from the community! Here are some ways you can get involved:
 
-1. **Report Bugs**: If you find a bug, please report it by creating an issue on our [GitHub Issues](https://github.com/Higor-Dinis/Eliptic/issues) page.
+1. **Report Bugs**: If you find a bug, please report it by creating an issue on our [GitHub Issues](https://github.com/Higor-Dinis/Elliptic/issues) page.
 
 2. **Submit Pull Requests**: If you have a fix or a new feature, feel free to submit a pull request. Please ensure your code follows our coding standards and includes tests.
 

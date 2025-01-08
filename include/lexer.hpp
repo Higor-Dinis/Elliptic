@@ -18,72 +18,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 #pragma once
-#include <bits/stdc++.h>
 
-#include <fstream>
-#include <string>
 #include <vector>
+#include <optional>
 
+#include "scanner.hpp"
 #include "tokens.hpp"
 
-/**
- * @class Lexer
- * @brief A class to tokenize source code.
- * 
- * The Lexer class is responsible for converting a string of source code into a vector of tokens.
- * It maintains the current character index, the actual character being processed, the source code,
- * and the list of tokens generated. It also has a list of keywords to recognize specific tokens.
- * 
- * @note The class provides methods to feed code lines or files to the lexer and retrieve the generated tokens.
- */
 class Lexer {
- private:
-  int character_index = -1;
-  char actual_character;
-  std::string source_code;
-  std::vector<Token> tokens;
-  std::vector<std::string> keywords = {"exit"};
+  public:
+    Lexer(Scanner* scanner);
 
-  char next();
+    Token peek_token();
+    Token consume_token();
+    // Token get_at(int i);
 
-  char peek(int i);
+    std::vector<Token> get_tokens();
 
-  char peek();
+  private:
+    Scanner* scanner;
 
- public:
-  Lexer();
-  ~Lexer();
+    std::string buffer;
+    int token_index;
 
-  std::vector<Token> get_tokens() const { return tokens; }
+    Token process_token();
 
-  /**
-   * Feeds to the lexer a code line.
-   * 
-   * Args:
-   *  (std::string) code_line: The line of code to tokenize.
-   * 
-   * Returns:
-   *  True: If lexing OK.
-   *  False: If there's a problem.
-   * 
-   * @note This method is used to tokenize a single line of code.
-   */
-  bool feed(std::string code_line);
+    void handle_whitespace();
+    void handle_new_line();
+    std::optional<Token> handle_number();
+    std::optional<Token> handle_identifier();
 
-  
-  /**
-   * Feeds to the lexer a source file.
-   * 
-   * Args:
-   *  (std::ifstream*) source_file: The source file to tokenize.
-   * 
-   * Returns:
-   *  True: If lexing OK.
-   *  False: If there's a problem.
-   * 
-   * @note This method is used to tokenize a entire file of code.
-   */
-  bool feed(std::ifstream* source_file);
+    std::optional<Token> handle_nonalpha_char();
+
+    bool can_be_identifier(std::string identifier);
+    bool can_be_identifier(char c);
+
+    bool can_be_numeric(std::string numeric);
+
+    bool is_keyword(std::string keyword);
 };

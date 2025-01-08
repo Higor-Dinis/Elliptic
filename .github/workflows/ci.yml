@@ -1,0 +1,33 @@
+name: C++ CI
+
+on:
+  push:
+    branches:
+      - main
+      - 0.0.1
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up C++ toolchain
+        uses: actions/setup-cpp@v1
+        with:
+          compiler: 'gcc'
+
+      - name: Install dependencies
+        run: sudo apt-get install -y cmake g++ ninja-build
+
+      - name: Build and run tests
+        run: |
+          mkdir build
+          cd build
+          cmake -G Ninja ..
+          ninja
+          ctest --verbose

@@ -35,27 +35,12 @@ int main(int argc, char const *argv[]) {
   std::ifstream source_file;
   source_file.open(argv[1]);
 
-  if (!source_file.is_open()) {
-    std::cout << "Error: File not found" << std::endl;
-    return 1;
-  }
+  auto scanner = Scanner(&source_file);
 
-  auto lexer = Lexer();
-  lexer.feed(&source_file);
+  auto lexer = Lexer(&scanner);
+  auto tokens = lexer.get_tokens();
 
-  if (lexer.get_tokens().empty()) {
-    std::cout << "Error: No tokens found" << std::endl;
-    return 1;
-  }
+  auto parser = Parser();
 
-  auto parser = Parser(lexer.get_tokens());
-
-  auto nodes = parser.parse();
-  if (nodes.empty()) {
-    std::cout << "Error: No nodes found" << std::endl;
-    return 1;
-  }
-
-  AssemblyGenerator().generate(parser.parse());
   return 0;
 }
