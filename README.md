@@ -1,7 +1,6 @@
 # Elliptic
 
-![Untitled-1](https://github.com/user-attachments/assets/ce5a97a1-a5fe-48f7-9723-ea7b18efa108)
-
+![Elliptic Language](https://github.com/user-attachments/assets/fda8a897-cddf-4810-a71e-4009c3b903eb)
 
 
 ## The project
@@ -46,7 +45,7 @@ $ ninja .
 
 To build documentations run:
 ```bash
-$ mkdir docs
+$ mkdir doxygen_docs
 $ doxygen
 ```
 
