@@ -1,5 +1,9 @@
 # Elliptic
 
+![Untitled-1](https://github.com/user-attachments/assets/ce5a97a1-a5fe-48f7-9723-ea7b18efa108)
+
+
+
 ## The project
 Elliptic is a open-source, MIT licensed, compiled programming language. The basic premisse is be a easy, programmer-friendly language.
 
